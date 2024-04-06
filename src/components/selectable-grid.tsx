@@ -15,7 +15,10 @@ export const SelectableGrid = ({
     setSelectedBoxes([boxNumber]);
   };
 
-  const handleMouseUp = () => {};
+  const handleMouseUp = () => {
+    setMouseDown(false);
+    setSelectedBoxes([]);
+  };
 
   const handleMouseEnter = (boxNumber: number) => {
     if (isMouseDown) {
@@ -30,13 +33,17 @@ export const SelectableGrid = ({
 
       const minRow = Math.min(startRow, endRow);
       const maxRow = Math.max(startRow, endRow);
+
       const minCol = Math.min(startCol, endCol);
       const maxCol = Math.max(startCol, endCol);
 
       const selected = [];
       for (let row = minRow; row <= maxRow; row++) {
         for (let col = minCol; col <= maxCol; col++) {
-          selected.push(row * cols + col + 1);
+          const cellNo = row * cols + col + 1;
+          const nextCell = cellNo > endBox ? null : cellNo + 2;
+          // const prevCell = cellNo - 1 > 0 ? cellNo - 1 : null;
+          cellNo < nextCell! ? selected.push(cellNo) : selected.unshift(cellNo);
         }
       }
 
